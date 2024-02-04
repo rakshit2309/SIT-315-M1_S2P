@@ -1,0 +1,48 @@
+// Define the pin number for the button and LED
+const uint8_t BTN_PIN = 2;
+const uint8_t LED_PIN = 13;
+
+// Initialize variables to store the previous state of the button and the current state of the LED
+uint8_t buttonPrevState = LOW;
+uint8_t ledState = LOW;
+
+// Setup function: runs once when the microcontroller starts
+void setup()
+{
+  // Set the button pin as INPUT_PULLUP to enable internal pull-up resistor
+  pinMode(BTN_PIN, INPUT_PULLUP);
+  // Set the LED pin as an output
+  pinMode(LED_PIN, OUTPUT);
+  // Begin serial communication at a baud rate of 9600
+  Serial.begin(9600);
+}
+
+// Loop function: runs repeatedly as long as the microcontroller is powered on
+void loop()
+{
+  // Read the current state of the button (HIGH or LOW)
+  uint8_t buttonState = digitalRead(BTN_PIN);
+  
+  // Print the states of the button, previous button, and LED to the Serial Monitor
+  Serial.print("Button: ");
+  Serial.print(buttonState);
+  Serial.print(" | PrevButton: ");
+  Serial.print(buttonPrevState);
+  Serial.print(" | LED: ");
+  Serial.println(ledState);
+  
+  // Check if the button state has changed
+  if(buttonState != buttonPrevState)
+  {
+    // Toggle the LED state
+    ledState = !ledState;
+    // Update the LED state
+    digitalWrite(LED_PIN, ledState);
+  }
+  
+  // Update the previous button state for the next iteration
+  buttonPrevState = buttonState;
+    
+  // Introduce a delay of 500 milliseconds to avoid rapid state changes
+  delay(50); //Delay decreased to 50ms
+}
